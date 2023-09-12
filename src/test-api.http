@@ -1,0 +1,37 @@
+###
+GET http://localhost:3005/hometask_01/api/videos
+
+###
+GET http://localhost:3005/hometask_01/api/videos/3452435
+
+###
+GET http://localhost:3005/hometask_01/api/videos/65745674
+
+###
+DELETE http://localhost:3005/hometask_01/api/testing/all-data
+
+###
+DELETE http://localhost:3005/hometask_01/api/videos/3452435
+
+###
+DELETE http://localhost:3005/hometask_01/api/videos/65745674
+
+###
+POST http://localhost:3005/hometask_01/api/videos
+Content-Type: application/json
+
+{
+  "title": "What a title",
+  "author": "Elon Musk",
+  "availableResolutions": ["P144", "P360", "P1080"]
+}
+
+###
+POST http://localhost:3005/hometask_01/api/videos
+Content-Type: application/json
+
+{
+  "title": "What a title",
+  "author": "Elon Musk",
+  "availableResolutions": ["P140", "P360", "P1080"]
+}
