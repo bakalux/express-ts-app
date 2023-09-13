@@ -33,7 +33,7 @@ videosRouter.post('/', (req: Request, res: Response) => {
 	}
 
 	res.status(400).send({
-		errorMessages: validationErrors
+		errorsMessages: validationErrors
 	});
 });
 
@@ -60,7 +60,7 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 
 	if (validationErrors.length) {
 		res.status(400).send({
-			errorMessages: validationErrors
+			errorsMessages: validationErrors
 		});
 
 		return;
