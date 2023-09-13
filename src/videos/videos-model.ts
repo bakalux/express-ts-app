@@ -20,7 +20,7 @@ export interface Video {
 	availableResolutions: VideoResolution[];
 }
 
-const videos: Video[] = [
+let videos: Video[] = [
 	{
 		id: 3452435,
 		title: 'Mock video',
@@ -33,10 +33,10 @@ const videos: Video[] = [
 	}
 ];
 
-export interface VideosData {
-	data: Video[];
+export function getVideos(): Video[] {
+	return [...videos];
 }
 
-export const videosData: VideosData = {
-	data: videos,
+export function setVideos(items: Video[]): void {
+	videos = items;
 }
