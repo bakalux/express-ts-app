@@ -2,7 +2,6 @@ import { Request, Response, Router } from "express";
 
 import { Video, videosData, VideoResolution } from './videos-model';
 import { validatePostVideo, validatePutVideo } from './video-validation';
-import { generateRandomId } from '../utils';
 
 const videosRouter = Router()
 
