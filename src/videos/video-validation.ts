@@ -43,9 +43,11 @@ function isValidField(field: VideoField, data: unknown, isOptional?: boolean): b
 	}
 
 	switch (field) {
-		case 'author':
+		case 'author': {
+			return typeof data === 'string' && data.length <= 20;
+		}
 		case 'title': {
-			return typeof data === 'string';
+			return typeof data === 'string' && data.length <= 40;
 		}
 		case 'availableResolutions': {
 			return Array.isArray(data) && !data.some((resolution: VideoResolution) => !allowedResolutions.has(resolution))
