@@ -43,3 +43,14 @@ Content-Type: application/json
 {
   "availableResolutions": ["P144", "P360", "P1080"]
 }
+
+###
+PUT http://localhost:3005/videos/3452435
+Content-Type: application/json
+
+{
+  "title": "What a title",
+  "author": "Elon Musk",
+  "minAgeRestriction": 25,
+  "availableResolutions": ["P140", "P360", "P1080"]
+}

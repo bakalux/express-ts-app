@@ -56,7 +56,7 @@ function isValidField(field: VideoField, data: unknown, isOptional?: boolean): b
 			return typeof data === 'boolean';
 		}
 		case 'minAgeRestriction': {
-			return data === null || typeof data === 'number' && Number.isInteger(data) && (data >= 1 || data <= 18)
+			return data === null || (typeof data === 'number' && Number.isInteger(data) && (data >= 1 && data <= 18))
 		}
 		case 'createdAt':
 		case 'publicationDate': {
