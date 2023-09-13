@@ -7,7 +7,7 @@ export interface FieldError {
 
 type VideoField = keyof Video
 
-const allowedResolutions = new Set([VideoResolution.P144, VideoResolution.P240, VideoResolution.P360, VideoResolution.P480, VideoResolution.P720, VideoResolution.P1080, VideoResolution.P1440, VideoResolution.P2160] as const);
+const allowedResolutions = new Set([VideoResolution.P144, VideoResolution.P240, VideoResolution.P360, VideoResolution.P480, VideoResolution.P720, VideoResolution.P1080, VideoResolution.P1440, VideoResolution.P2160]);
 
 export function validatePostVideo(body: any): FieldError[] {
 	const postVideoFields: VideoField[] = ['title', 'author', 'availableResolutions'];
