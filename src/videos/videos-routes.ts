@@ -4,7 +4,7 @@ import { Video, videosData, VideoResolution } from './videos-model';
 import { validatePostVideo, validatePutVideo } from './video-validation';
 
 const videosRouter = Router()
-
+let idIndex = 0;
 videosRouter.get('/', (req: Request, res: Response) => {
 	res.status(200).send(videosData.data);
 });
@@ -15,15 +15,20 @@ videosRouter.post('/', (req: Request, res: Response) => {
 	if (!validationErrors.length) {
 		const createdDate = new Date();
 		const publicationDate = new Date(createdDate.getTime() + 86400000);
-		videosData.data.push({
+
+		const video = {
 			...req.body,
+			id: idIndex,
 			createdAt: createdDate.toISOString(),
 			publicationDate: publicationDate.toISOString(),
 			canBeDownloaded: false,
 			minAgeRestriction: null,
-		});
+		}
+		idIndex++;
 
-		res.status(201).send();
+		videosData.data.push(video);
+
+		res.status(201).send(video);
 		return;
 	}
 
