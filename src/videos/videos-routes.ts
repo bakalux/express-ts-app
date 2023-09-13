@@ -82,7 +82,7 @@ videosRouter.delete('/:id', (req: Request, res: Response) => {
 		return;
 	}
 
-	videosData.data.filter((v: Video) => v.id !== video.id);
+	videosData.data = videosData.data.filter((v: Video) => v.id !== video.id);
 
 	res.status(204).send();
 });
