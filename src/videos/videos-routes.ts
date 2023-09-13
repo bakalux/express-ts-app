@@ -18,10 +18,9 @@ videosRouter.post('/', (req: Request, res: Response) => {
 		const publicationDate = new Date(createdDate.getTime() + 86400000);
 		videosData.data.push({
 			...req.body,
-			id: generateRandomId(),
 			createdAt: createdDate.toISOString(),
 			publicationDate: publicationDate.toISOString(),
-			canBeDownloaded: true,
+			canBeDownloaded: false,
 			minAgeRestriction: null,
 		});
 
