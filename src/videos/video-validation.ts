@@ -58,21 +58,11 @@ function isValidField(field: VideoField, data: unknown, isOptional?: boolean): b
 		}
 		case 'createdAt':
 		case 'publicationDate': {
-			return isDateValid(data)
+			return typeof data === 'string'
 		}
 
 		default: {
 			return false;
 		}
 	}
-}
-
-function isDateValid(data: unknown): boolean {
-	if (typeof data !== 'string') {
-		return false;
-	}
-
-	const date = new Date(data);
-
-	return date instanceof Date && !isNaN(date.getTime()) && data === date.toISOString().split('T')[0];
 }
