@@ -33,6 +33,10 @@ const videos: Video[] = [
 	}
 ];
 
-export const videosData = {
+export interface VideosData {
+	data: Video[];
+}
+
+export const videosData: VideosData = {
 	data: videos,
 }

@@ -35,3 +35,11 @@ Content-Type: application/json
   "author": "Elon Musk",
   "availableResolutions": ["P140", "P360", "P1080"]
 }
+
+###
+POST http://localhost:3005/hometask_01/api/videos
+Content-Type: application/json
+
+{
+  "availableResolutions": ["P144", "P360", "P1080"]
+}

@@ -1,32 +1,37 @@
 import { Request, Response, Router } from "express";
 
 import { Video, videosData, VideoResolution } from './videos-model';
-import { validatePostVideo } from './video-validation';
+import { validatePostVideo, validatePutVideo } from './video-validation';
 import { generateRandomId } from '../utils';
 
 const videosRouter = Router()
 
 videosRouter.get('/', (req: Request, res: Response) => {
-	res.send(videosData.data).status(200);
+	res.status(200).send(videosData.data);
 });
 
 videosRouter.post('/', (req: Request, res: Response) => {
 	const validationErrors = validatePostVideo(req.body);
 
 	if (!validationErrors.length) {
+		const createdDate = new Date();
+		const publicationDate = new Date(createdDate.getTime() + 86400000);
 		videosData.data.push({
 			...req.body,
-			id: generateRandomId()
+			id: generateRandomId(),
+			createdAt: createdDate.toISOString(),
+			publicationDate: publicationDate.toISOString(),
+			canBeDownloaded: true,
+			minAgeRestriction: null,
 		});
 
-		console.log('videosData', videosData);
-		res.send().status(201);
+		res.status(201).send();
 		return;
 	}
 
-	res.send({
+	res.status(400).send({
 		errorMessages: validationErrors
-	}).status(400);
+	});
 });
 
 videosRouter.get('/:id', (req: Request, res: Response) => {
@@ -48,7 +53,20 @@ videosRouter.put('/:id', (req: Request, res: Response) => {
 		return;
 	}
 
-	videosData.data[videoIndex] = req.body;
+	const validationErrors = validatePutVideo(req.body);
+
+	if (validationErrors.length) {
+		res.status(400).send({
+			errorMessages: validationErrors
+		});
+
+		return;
+	}
+
+	videosData.data[videoIndex] = {
+		...videosData.data[videoIndex],
+		...req.body,
+	};
 
 	res.status(204).send();
 });

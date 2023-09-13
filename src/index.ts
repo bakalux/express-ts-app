@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors'
 
 import videosRouter from './videos/videos-routes';
@@ -8,7 +7,7 @@ import { videosData } from './videos/videos-model';
 const app = express();
 const port = process.env.PORT || 3005;
 
-app.use(bodyParser({}));
+app.use(express.json());
 app.use(cors())
 
 const BASE_URL = '/hometask_01/api'
@@ -20,5 +19,5 @@ app.delete(`${BASE_URL}/testing/all-data`, (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${ port }`)
+	console.log(`Video app listening on port ${ port }`)
 })
