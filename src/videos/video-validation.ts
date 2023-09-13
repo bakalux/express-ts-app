@@ -18,15 +18,15 @@ export function validatePostVideo(body: any): FieldError[] {
 export function validatePutVideo(body: any): FieldError[] {
 	const putVideoFields: VideoField[] = ['title', 'author', 'availableResolutions', 'canBeDownloaded', 'minAgeRestriction', 'createdAt', 'publicationDate'];
 
-	return validateFields(putVideoFields, body, true);
+	return validateFields(putVideoFields, body);
 }
 
 
-function validateFields(fields: VideoField[], body: any, areFieldsOptional?: boolean): FieldError[] {
+function validateFields(fields: VideoField[], body: any): FieldError[] {
 	const fieldErrors: FieldError[] = [];
 
 	fields.forEach((field: VideoField) => {
-		if (!isValidField(field, body[field], areFieldsOptional)) {
+		if (!isValidField(field, body[field], !(field === 'title' || field === 'author'))) {
 			fieldErrors.push({
 				message: `${ field } is incorrect`,
 				field,

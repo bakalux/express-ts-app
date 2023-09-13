@@ -4,7 +4,7 @@ import cors from 'cors'
 import videosRouter from './videos/videos-routes';
 import { videosData } from './videos/videos-model';
 
-const app = express();
+export const app = express();
 const port = process.env.PORT || 3005;
 
 app.use(express.json());
