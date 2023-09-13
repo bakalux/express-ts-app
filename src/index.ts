@@ -15,5 +15,5 @@ app.use('/videos', videosRouter);
 app.delete('/testing/all-data', videosController.deleteAll);
 
 app.listen(port, () => {
-	console.log(`Video app listening on port ${ port }`)
+	console.log(`Video api app listening on port ${ port }`)
 })
