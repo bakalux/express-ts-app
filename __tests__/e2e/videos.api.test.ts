@@ -1,13 +1,39 @@
 import request from 'supertest';
+
 import { app } from '../../src/index';
-import { getVideos } from '../../src/videos/videos-model';
+import { Video } from '../../src/videos/videos-model';
+
+
+let createdVideo: Video;
+beforeAll(async () => {
+	await request(app).delete('/testing/all-data');
+	const response = await request(app).post('/videos')
+		.send({
+			title: 'kek',
+			author: 'shrek'
+		});
+
+	createdVideo = response.body;
+	console.log('createdVideo', createdVideo);
+});
 
 describe('/videos', () => {
-	const initVideos = getVideos();
-	it('should return 200', async () => {
-		await request(app).get('/videos')
-			.expect(initVideos)
-			.expect(200)
+	it('should return 200 with proper created video', async () => {
+		const expectedVideo: Video = {
+			title: 'kek',
+			author: 'shrek',
+			id: 1,
+			minAgeRestriction: null,
+			canBeDownloaded: false,
+			createdAt: expect.any(String),
+			publicationDate: expect.any(String),
+			availableResolutions: [],
+		};
+
+		const res = await request(app).get('/videos')
+			.expect(200);
+
+		expect(res.body).toEqual([expectedVideo]);
 	});
 
 	it('should return 201', async () => {
@@ -69,7 +95,7 @@ describe('/videos', () => {
 
 describe('/videos/:id', () => {
 	it('should return 200', async () => {
-		await request(app).get('/videos/3452435')
+		await request(app).get(`/videos/${ createdVideo.id }`)
 			.expect(200)
 	});
 
@@ -85,7 +111,7 @@ describe('/videos/:id', () => {
 	});
 
 	it('should return validation error and 400', async () => {
-		await request(app).put('/videos/3452435')
+		await request(app).put(`/videos/${ createdVideo.id }`)
 			.send({
 				title: 12341325,
 				author: 3412345,
@@ -105,7 +131,7 @@ describe('/videos/:id', () => {
 			.expect(400)
 
 
-		await request(app).put('/videos/3452435')
+		await request(app).put(`/videos/${ createdVideo.id }`)
 			.send({
 				author: 'asdfasd',
 				title: 'asdfasd',
@@ -121,7 +147,7 @@ describe('/videos/:id', () => {
 			})
 			.expect(400)
 
-		await request(app).put('/videos/3452435')
+		await request(app).put(`/videos/${ createdVideo.id }`)
 			.send({
 				author: 'asdfasd',
 				title: 'asdfasd',
@@ -138,7 +164,7 @@ describe('/videos/:id', () => {
 			})
 			.expect(400)
 
-		await request(app).put('/videos/3452435')
+		await request(app).put(`/videos/${ createdVideo.id }`)
 			.send({
 				author: 'asdfasd',
 				title: 'asdfasd',
@@ -156,7 +182,7 @@ describe('/videos/:id', () => {
 			})
 			.expect(400)
 
-		await request(app).put('/videos/3452435')
+		await request(app).put(`/videos/${ createdVideo.id }`)
 			.send({
 				author: 'asdfasd',
 				title: 'asdfasd',
@@ -180,7 +206,7 @@ describe('/videos/:id', () => {
 	});
 
 	it('should return 204', async () => {
-		await request(app).put('/videos/3452435')
+		await request(app).put(`/videos/${ createdVideo.id }`)
 			.send({
 				author: 'asdfasd',
 				title: 'asdfasd',
@@ -192,7 +218,7 @@ describe('/videos/:id', () => {
 			})
 			.expect(204)
 
-		await request(app).delete('/videos/3452435')
+		await request(app).delete(`/videos/${ createdVideo.id }`)
 			.expect(204)
 	});
 });

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getVideos, setVideos, Video } from './videos-model';
 import { validatePostVideo, validatePutVideo } from './videos-validation';
 
-let idIndex = 0;
+let idIndex = 1;
 
 export class VideosController {
 	getAll(req: Request, res: Response): void {
@@ -35,6 +35,7 @@ export class VideosController {
 				publicationDate: publicationDate.toISOString(),
 				canBeDownloaded: false,
 				minAgeRestriction: null,
+				availableResolutions: req.body.availableResolutions ?? [],
 			}
 			idIndex++;
 
