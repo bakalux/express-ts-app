@@ -13,6 +13,6 @@ app.use(cors())
 app.use('/videos', videosRouter);
 app.delete('/testing/all-data', videosController.deleteAll);
 
-app.listen(port, () => {
+export const server = app.listen(port, () => {
 	console.log(`Video api app listening on port ${ port }`)
 })

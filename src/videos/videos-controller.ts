@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getVideos, setVideos, Video } from './videos-model';
+import { getVideos, setVideos, ViewVideoModel } from './videos-model';
 import { validatePostVideo, validatePutVideo } from './videos-validation';
 
 let idIndex = 1;
@@ -11,7 +11,7 @@ export class VideosController {
 
 	getById(req: Request, res: Response): void {
 		const videos = getVideos()
-		const video = videos.find((v: Video) => v.id === Number(req.params.id));
+		const video = videos.find((v: ViewVideoModel) => v.id === Number(req.params.id));
 
 		if (!video) {
 			res.status(404).send();
@@ -53,7 +53,7 @@ export class VideosController {
 
 	updateById(req: Request, res: Response): void {
 		const videos = getVideos();
-		const videoIndex = videos.findIndex((v: Video) => v.id === Number(req.params.id));
+		const videoIndex = videos.findIndex((v: ViewVideoModel) => v.id === Number(req.params.id));
 
 		if (videoIndex === -1) {
 			res.status(404).send();
@@ -82,14 +82,14 @@ export class VideosController {
 
 	deleteById(req: Request, res: Response): void {
 		const videos = getVideos();
-		const video = videos.find((v: Video) => v.id === Number(req.params.id));
+		const video = videos.find((v: ViewVideoModel) => v.id === Number(req.params.id));
 
 		if (!video) {
 			res.status(404).send();
 			return;
 		}
 
-		setVideos(videos.filter((v: Video) => v.id !== video.id));
+		setVideos(videos.filter((v: ViewVideoModel) => v.id !== video.id));
 
 		res.status(204).send();
 	}

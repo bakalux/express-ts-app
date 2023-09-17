@@ -1,11 +1,11 @@
-import { Video, VideoResolution } from './videos-model';
+import { ViewVideoModel, VideoResolution } from './videos-model';
 
 export interface FieldError {
 	message: string;
 	field: VideoField;
 }
 
-type VideoField = keyof Video
+type VideoField = keyof ViewVideoModel
 
 const allowedResolutions = new Set([VideoResolution.P144, VideoResolution.P240, VideoResolution.P360, VideoResolution.P480, VideoResolution.P720, VideoResolution.P1080, VideoResolution.P1440, VideoResolution.P2160]);
 
