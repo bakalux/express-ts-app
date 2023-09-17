@@ -1,17 +1,25 @@
 import request from 'supertest';
 
 import { app, server } from '../../src/index';
-import { Video } from '../../src/videos/videos-model';
+import { CreateVideoModel, PutVideoModel, VideoResolution, ViewVideoModel } from '../../src/videos/videos-model';
 
 
-let createdVideo: Video;
+let createdVideo: ViewVideoModel;
+
+export type UnknownPutVideoModel = {
+  [K in keyof PutVideoModel]: unknown;
+};
+
 beforeAll(async () => {
 	await request(app).delete('/testing/all-data');
+
+	const createVideoData: CreateVideoModel = {
+		title: 'kek',
+		author: 'shrek',
+	}
+
 	const response = await request(app).post('/videos')
-		.send({
-			title: 'kek',
-			author: 'shrek'
-		});
+		.send(createVideoData);
 
 	createdVideo = response.body;
 });
@@ -22,7 +30,7 @@ afterAll(async () => {
 
 describe('/videos', () => {
 	it('should return 200 with proper created video', async () => {
-		const expectedVideo: Video = {
+		const expectedVideo: ViewVideoModel = {
 			title: 'kek',
 			author: 'shrek',
 			id: 1,
@@ -40,12 +48,13 @@ describe('/videos', () => {
 	});
 
 	it('should return 201', async () => {
+		const createVideoData: CreateVideoModel = {
+			title: 'asdfads',
+			author: 'asdfas',
+			availableResolutions: [VideoResolution.P480, VideoResolution.P360, VideoResolution.P720]
+		};
 		await request(app).post('/videos')
-			.send({
-				title: 'asdfads',
-				author: 'asdfas',
-				availableResolutions: ['P1080', 'P360', 'P720']
-			})
+			.send(createVideoData)
 			.expect(201)
 	});
 
@@ -150,13 +159,15 @@ describe('/videos/:id', () => {
 			})
 			.expect(400)
 
+		const dataWithWrongAge: UnknownPutVideoModel = {
+			author: 'asdfasd',
+			title: 'asdfasd',
+			availableResolutions: [VideoResolution.P1440],
+			minAgeRestriction: 25
+		}
+
 		await request(app).put(`/videos/${ createdVideo.id }`)
-			.send({
-				author: 'asdfasd',
-				title: 'asdfasd',
-				availableResolutions: ['P1440'],
-				minAgeRestriction: 25
-			})
+			.send(dataWithWrongAge)
 			.expect({
 				errorsMessages: [
 					{
@@ -167,14 +178,16 @@ describe('/videos/:id', () => {
 			})
 			.expect(400)
 
+		const dataWithWrongDownloaded: UnknownPutVideoModel = {
+			author: 'asdfasd',
+			title: 'asdfasd',
+			availableResolutions: [VideoResolution.P240],
+			minAgeRestriction: 18,
+			canBeDownloaded: {},
+		}
+
 		await request(app).put(`/videos/${ createdVideo.id }`)
-			.send({
-				author: 'asdfasd',
-				title: 'asdfasd',
-				availableResolutions: ['P1440'],
-				minAgeRestriction: 18,
-				canBeDownloaded: {},
-			})
+			.send(dataWithWrongDownloaded)
 			.expect({
 				errorsMessages: [
 					{
@@ -185,14 +198,16 @@ describe('/videos/:id', () => {
 			})
 			.expect(400)
 
+		const dataWithWrongDates: UnknownPutVideoModel = {
+			author: 'asdfasd',
+			title: 'asdfasd',
+			availableResolutions: [VideoResolution.P720],
+			createdAt: 123465366,
+			publicationDate: 42534523,
+		}
+
 		await request(app).put(`/videos/${ createdVideo.id }`)
-			.send({
-				author: 'asdfasd',
-				title: 'asdfasd',
-				availableResolutions: ['P144'],
-				createdAt: 123465366,
-				publicationDate: 42534523,
-			})
+			.send(dataWithWrongDates)
 			.expect({
 				errorsMessages: [
 					{
@@ -209,16 +224,18 @@ describe('/videos/:id', () => {
 	});
 
 	it('should return 204', async () => {
+		const data: PutVideoModel = {
+			author: 'asdfasd',
+			title: 'asdfasd',
+			availableResolutions: [VideoResolution.P144, VideoResolution.P240, VideoResolution.P360, VideoResolution.P480, VideoResolution.P720, VideoResolution.P1080, VideoResolution.P1440, VideoResolution.P2160],
+			createdAt: new Date().toISOString(),
+			publicationDate: new Date().toISOString(),
+			minAgeRestriction: 16,
+			canBeDownloaded: true,
+		};
+
 		await request(app).put(`/videos/${ createdVideo.id }`)
-			.send({
-				author: 'asdfasd',
-				title: 'asdfasd',
-				availableResolutions: ['P144', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'],
-				createdAt: new Date().toISOString(),
-				publicationDate: new Date().toISOString(),
-				minAgeRestriction: 16,
-				canBeDownloaded: true,
-			})
+			.send(data)
 			.expect(204)
 
 		await request(app).delete(`/videos/${ createdVideo.id }`)

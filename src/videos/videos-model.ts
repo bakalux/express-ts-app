@@ -9,7 +9,7 @@ export enum VideoResolution {
 	P2160 = 'P2160',
 }
 
-export interface Video {
+export interface ViewVideoModel {
 	id: number;
 	title: string;
 	author: string;
@@ -20,7 +20,15 @@ export interface Video {
 	availableResolutions: VideoResolution[];
 }
 
-let videos: Video[] = [
+export interface CreateVideoModel {
+	title: string;
+	author: string;
+	availableResolutions?: VideoResolution[];
+}
+
+export interface PutVideoModel extends Partial<Omit<ViewVideoModel, 'id'>> {};
+
+let videos: ViewVideoModel[] = [
 	{
 		id: 3452435,
 		title: 'Mock video',
@@ -33,10 +41,10 @@ let videos: Video[] = [
 	}
 ];
 
-export function getVideos(): Video[] {
+export function getVideos(): ViewVideoModel[] {
 	return [...videos];
 }
 
-export function setVideos(items: Video[]): void {
+export function setVideos(items: ViewVideoModel[]): void {
 	videos = items;
 }
