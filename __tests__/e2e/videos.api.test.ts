@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-import { app } from '../../src/index';
+import { app, server } from '../../src/index';
 import { Video } from '../../src/videos/videos-model';
 
 
@@ -14,8 +14,11 @@ beforeAll(async () => {
 		});
 
 	createdVideo = response.body;
-	console.log('createdVideo', createdVideo);
 });
+
+afterAll(async () => {
+	server.close();
+})
 
 describe('/videos', () => {
 	it('should return 200 with proper created video', async () => {
